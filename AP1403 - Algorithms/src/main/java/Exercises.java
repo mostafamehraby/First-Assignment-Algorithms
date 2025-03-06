@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Exercises {
 
-    /*
+    /*;p
         there is an array of positive integers as input of function and another integer for the target value
         all the algorithm should do is to find those two integers in array which their multiplication is the target
         then it should return an array of their indices
@@ -8,8 +12,18 @@ public class Exercises {
 
         note: you should return the indices in ascending order and every array's solution is unique
     */
-    public int[] productIndices(int[] values, int target) {
-        // todo
+    public static int[] productIndices(int[] values, int target) {
+
+        for (int i = 0 ; i < values.length ; i++){
+            for(int j = i + 1 ; j < values.length ; j++){
+                if(values[i] * values[j] == target){
+                    int[] index = {i , j};
+                    Arrays.sort(index);
+                    return index;
+                }
+            }
+        }
+
         return null;
     }
 
@@ -24,9 +38,52 @@ public class Exercises {
 
         so you should walk in that matrix in a curl and then add the numbers in order you've seen them in a 1D array
     */
-    public int[] spiralTraversal(int[][] values, int rows, int cols) {
-        // todo
+    public static int[] spiralTraversal(int[][] values, int rows, int cols) {
+        if (values == null || rows == 0 || cols == 0) {
+            return new int[0];  // .اگر روردی نا معتبر بود یک ارایه ی خالی چاپ میکنیم
+        }
+        List<Integer> resultList = new ArrayList<>();
+        int startrow = 0 ;
+        int endrow = rows - 1 ;
+        int startcol = 0 ;
+        int endcol = cols -1 ;
+
+        while (startrow <= endrow && startcol <= endcol) {
+
+            for(int i = startcol ; i < endcol ; i++){
+                resultList.add(values [startrow][i]);
+            }
+            startrow++ ;
+
+            for(int i = startrow ; i <= endrow ; i++){
+                resultList.add(values[i][endcol]);
+            }
+            endcol-- ;
+
+            if (startrow <= endrow) {
+                for(int i = endcol ; i >= startcol ; i--){
+                    resultList.add(values[endrow][i]);
+                }
+            }
+            endrow-- ;
+
+            if (startcol <= endcol) {
+                for(int i = endrow ; i >= startrow ; i--){
+                    resultList.add(values[i][startcol]);;
+                }
+            }
+            startcol++ ;
+
+            //  .هر کد های بالا به ترتیب کد هایی برای حرکت به راست پایین چپ و بالا است
+            
+            int[] result = new int[resultList.size()];
+            for(int i = 0 ; i < resultList.size() ; i++){
+                result[i] = resultList.get(i);
+            }
+            return result;
+        }
         return null;
+
     }
 
     /*
@@ -53,12 +110,82 @@ public class Exercises {
 
         if you're familiar with lists and arraylists, you can also edit method's body to use them instead of array
     */
-    public int[][] intPartitions(int n) {
-        // todo
-        return null;
+    public static int[][] intPartitions(int n) {
+
+        List<List<Integer>> partitionsList = new ArrayList<>();
+        partitionHelper(n, n, new ArrayList<>(), partitionsList);
+
+        int[][] partitionsArray = new int[partitionsList.size()][];
+        for (int i = 0; i < partitionsList.size(); i++) {
+            List<Integer> partition = partitionsList.get(i);
+            partitionsArray[i] = new int[partition.size()];
+            for (int j = 0; j < partition.size(); j++) {
+                partitionsArray[i][j] = partition.get(j);
+            }
+        }
+        return partitionsArray;
+    }
+
+    private static void partitionHelper(int n, int max, List<Integer> currentPartition, List<List<Integer>> partitions) {
+        if (n == 0) {
+            partitions.add(new ArrayList<>(currentPartition));
+            return;
+        }
+
+        for (int i = Math.min(max, n); i >= 1; i--) {
+            currentPartition.add(i);
+            partitionHelper(n - i, i, currentPartition, partitions);
+            currentPartition.remove(currentPartition.size() - 1);
+        }
     }
 
     public static void main(String[] args) {
-        // you can test your code here
+
+        int[] array = {1,2,3,4};
+        int targetvalue = 8 ;
+        int[] result = productIndices(array , targetvalue);
+
+        if (result != null) {
+            System.out.println("index : " + Arrays.toString(result));
+
+        }
+        else
+        {
+            System.out.println("we do not find it .");
+        }
     }
-}
+
+
+    //   main چک کردن کد دوم در 
+
+    int[][] matrix = { {1,2,3},{4,5,6},{7,8,9} };
+
+    int rows = matrix.length ;
+    int cols = matrix[0].length ;
+
+    int[] testing = spiralTraversal(matrix , rows , cols);
+
+     for(int i = 0 ; i < testing.length ; i++){
+        System.out.print(testing[i] + " ");
+    }
+
+    // main چک کردن کد سوم در 
+
+    int number = 4;
+        int[][] result = intPartitions(number);
+
+        System.out.println("Partitions of " + number + ":");
+        for (int[] partition : result) {
+            System.out.print("[");
+            for (int i = 0; i < partition.length; i++) {
+                System.out.print(partition[i]);
+                if (i < partition.length - 1) 
+                {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("]");
+        }
+
+        
+    }
