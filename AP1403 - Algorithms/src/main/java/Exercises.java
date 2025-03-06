@@ -13,30 +13,6 @@ public class Exercises {
         note: you should return the indices in ascending order and every array's solution is unique
     */
     public static int[] productIndices(int[] values, int target) {
-
-        for (int i = 0 ; i < values.length ; i++){
-            for(int j = i + 1 ; j < values.length ; j++){
-                if(values[i] * values[j] == target){
-                    int[] index = {i , j};
-                    Arrays.sort(index);
-                    return index;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /*
-        given a matrix of random integers, you should do spiral traversal in it
-        e.g. if the matrix is as shown below:
-        1 2 3
-        4 5 6
-        7 8 9
-        then the spiral traversal of that is:
-        {1, 2, 3, 6, 9, 8, 7, 4, 5}
-
-        so you should walk in that matrix in a curl and then add the numbers in order you've seen them in a 1D array
     */
     public static int[] spiralTraversal(int[][] values, int rows, int cols) {
         if (values == null || rows == 0 || cols == 0) {
@@ -139,6 +115,8 @@ public class Exercises {
         }
     }
 
+}
+
     public static void main(String[] args) {
 
         int[] array = {1,2,3,4};
@@ -186,6 +164,6 @@ public class Exercises {
             }
             System.out.println("]");
         }
-
-        
     }
+    
+    
